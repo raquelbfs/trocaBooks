@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="modelo.xhtml">
+
+	<ui:define name="titulo">#{msgs.tituloPrincipal}</ui:define>
+
+	<ui:define name="conteudo">
+
+		<p:menu style="min-width: 300px; margin: 0 auto" toggleable="true">
+			<p:submenu label="#{msgs.tituloMenu}">
+				<p:menuitem value="#{msgs.tituloCadLiv}"
+					action="#{livroMB.acaoListar}" ajax="false" icon="ui-icon-disk" />
+				<p:menuitem value="#{msgs.tituloLivDisp}"
+					action="#{livroMB.acaoListarDisponiveis}" ajax="false" icon="ui-icon-disk" />
+				<p:menuitem value="#{msgs.tituloCadTro}"
+					action="#{trocaMB.acaoListar}" ajax="false" icon="ui-icon-disk" />
+			</p:submenu>
+			<p:submenu label="Encerramento">
+				<p:menuitem value="Sair" action="#{loginMB.acaoLogout}" ajax="false"
+					icon="ui-icon-close" />
+			</p:submenu>
+		</p:menu>
+
+	</ui:define>
+
+</ui:composition>
+</html>

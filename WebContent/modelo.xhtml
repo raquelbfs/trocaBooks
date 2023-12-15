@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+	<script type="text/javascript" src="js/primefaces.js" />
+	<h:outputStylesheet library="webjars"
+		name="font-awesome/4.7.0/css/font-awesome-jsf.css" />
+	<title><ui:insert name="titulo">Título</ui:insert></title>
+</h:head>
+<h:body>
+
+		<p:graphicImage alt="Logo TrocaBooks" url="img/TrocaBooks8.jpg" />
+
+		<h:form id="form" prependId="false" enctype="multipart/form-data">
+
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+			<p:commandButton value="Sim" type="button"
+				styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="Não" type="button"
+				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		</p:confirmDialog>
+
+		<p:toolbar>
+			<p:toolbarGroup align="left">
+
+				<ui:insert name="opcoesMenu" />
+			</p:toolbarGroup>
+
+			<p:toolbarGroup align="right">
+				<h:outputText value="Usuário: "></h:outputText>
+				<h:outputText value="#{loginMB.usuario.nome}" styleClass="titulo"></h:outputText>
+
+				<p:growl id="message" showDetail="true" />
+
+				<p:commandLink immediate="true" ajax="false" type="push"
+					rendered="#{loginMB.autenticado}" value=" Sair"
+					action="#{loginMB.acaoLogout}" icon="ui-icon ui-icon-close">
+					<p:confirm header="Sair" message="Tem certeza que deseja sair?" />
+				</p:commandLink>
+
+				<p:commandButton immediate="true" ajax="false" type="push"
+					rendered="#{!loginMB.autenticado}" value="Login"
+					action="#{loginMB.index}" icon="ui-icon ui-icon-check" />
+			</p:toolbarGroup>
+
+		</p:toolbar>
+
+		<p:messages id="mensagens" />
+
+		<ui:insert name="cabecalho"></ui:insert>
+		<ui:insert name="conteudo"></ui:insert>
+
+	</h:form>
+
+</h:body>
+</html>

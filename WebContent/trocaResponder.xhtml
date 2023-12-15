@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="modelo.xhtml">
+
+	<f:metadata>
+		<f:event type="postAddToView" listener="#{trocaMB.lerTroca}" />
+	</f:metadata>
+
+	<ui:define name="titulo">#{msgs.tituloCadTro}</ui:define>
+
+	<ui:define name="conteudo">
+		<h:inputHidden id="codigo" value="#{trocaMB.troca.codigo}" />
+		<p:panelGrid columns="2">
+
+			<p:outputLabel for="codigo" value="#{msgs.campoCodigo}:" />
+			<h:outputText value="#{trocaMB.troca.codigo}" />
+
+			<p:outputLabel for="situacao" value="#{msgs.campoSituacao}:" />
+			<h:outputText id="situacao" value="#{trocaMB.troca.situacao.nome}" />
+
+			<p:outputLabel for="data_hora_troca" value="#{msgs.campoDataHoraTroca}:" />
+			<h:outputText id="data_hora_troca" value="#{trocaMB.troca.data_hora_troca}" />
+
+			<p:outputLabel for="local_troca" value="#{msgs.campoLocalTroca}:" />
+			<h:outputText id="local_troca" value="#{trocaMB.troca.local_troca}" />
+
+			<p:outputLabel for="oferece" value="#{msgs.campoLivroOferece}:" />
+			<h:outputText id="oferece" value="#{trocaMB.troca.oferece.titulo}" />
+
+			<p:outputLabel for="solicita" value="#{msgs.campoLivroSolicita}:" />
+			<h:outputText id="solicita" value="#{trocaMB.troca.solicita.titulo}" />
+
+			<p:outputLabel for="envia" value="#{msgs.campoUsuarioEnvia}:" />
+			<h:outputText id="envia" value="#{trocaMB.troca.envia.login}" />
+
+			<p:outputLabel for="recebe" value="#{msgs.campoUsuarioRecebe}:" />
+			<h:outputText id="recebe" value="#{trocaMB.troca.recebe.login}" />
+
+			<h:outputText value="" />
+			<h:panelGroup>
+				<p:commandButton id="aceitar" value="#{msgs.btnAceitar}"
+					ajax="false" action="#{trocaMB.acaoAceitar}" icon="ui-icon-check">
+					<f:param name="codParam" value="#{trocaMB.troca.codigo}" />
+				</p:commandButton>
+					-
+				<p:commandButton id="recusar" value="#{msgs.btnRecusar}"
+					ajax="false" action="#{trocaMB.acaoRecusar}" icon="ui-icon-close">
+					<f:param name="codParam" value="#{trocaMB.troca.codigo}" />
+				</p:commandButton>
+					-
+				<p:commandButton id="cancelar" value="#{msgs.btnCancelar}"
+					ajax="false" action="#{trocaMB.acaoCancelar}">
+					<f:param name="codParam" value="#{trocaMB.troca.codigo}" />
+				</p:commandButton>
+					-
+				<p:commandButton id="voltar" value="#{msgs.btnVoltar}"
+					ajax="false" immediate="true" action="#{trocaMB.acaoListar}" />
+			</h:panelGroup>
+
+		</p:panelGrid>
+
+	</ui:define>
+
+</ui:composition>
+</html>

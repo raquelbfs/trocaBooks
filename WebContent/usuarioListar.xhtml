@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="modelo.xhtml">
+
+	<ui:define name="titulo">#{msgs.tituloCadUsu}</ui:define>
+
+	<ui:define name="opcoesMenu">
+		<p:commandButton immediate="true" ajax="false" type="push"
+			value="Index" action="index.jsf" icon="ui-icon-home"
+			rendered="#{loginMB.autenticado}" />
+
+		<p:commandButton immediate="true" ajax="false"
+			value="#{msgs.linkNovoUsu}" action="#{usuarioMB.acaoAbrirInclusao}"
+			icon="ui-icon-pencil" />
+	</ui:define>
+
+	<ui:define name="conteudo">
+
+		<p:dataTable id="tabela" value="#{usuarioMB.lista}" var="usu"
+			rowHover="true" rendered="#{usuarioMB.lista != null}"
+			emptyMessage="Nenhum resultado foi encontrado!">
+
+			<f:facet name="header">#{msgs.tituloListaUsu}:</f:facet>
+			<f:facet name="footer">#{msgs.tituloTotUsu}: #{usuarioMB.listaSize}</f:facet>
+
+			<p:column>
+				<f:facet name="header">#{msgs.tituloOpcoes}</f:facet>
+				<p:commandButton ajax="false" title="#{msgs.linkAlterar}"
+					icon="ui-icon-pencil"
+					action="#{usuarioMB.acaoAbrirAlteracao(usu.id)}" />
+
+				<p:commandButton ajax="false" type="button"
+					title="#{msgs.linkExcluir}" onclick="PF('conf#{usu.id}').show()"
+					icon="ui-icon-close" />
+
+				<p:confirmDialog
+					message="Deseja excluir este usuário [#{usu.login}]?"
+					showEffect="fade" hideEffect="explode"
+					header="Confirmação de Exclusão" severity="alert"
+					widgetVar="conf#{usu.id}">
+
+					<p:commandButton ajax="false" type="push" value="Sim"
+						action="#{usuarioMB.acaoExcluir(usu.id)}" immediate="true"
+						icon="ui-icon-check">
+					</p:commandButton>
+
+					<p:commandButton value="Não" onclick="PF('conf#{usu.id}').hide()"
+						type="button" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoId}</f:facet>
+				<h:outputText value="#{usu.id}"></h:outputText>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoLogin}</f:facet>
+				<h:outputText value="#{usu.login}"></h:outputText>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoNome}</f:facet>
+				<h:outputText value="#{usu.nome}"></h:outputText>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoSenha}</f:facet>
+				<h:inputSecret value="#{usu.senha}" redisplay="true"></h:inputSecret>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoEmail}</f:facet>
+				<h:outputText value="#{usu.email}"></h:outputText>
+			</p:column>
+
+		</p:dataTable>
+
+	</ui:define>
+
+</ui:composition>
+</html>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="modelo.xhtml">
+
+	<f:metadata>
+		<f:event type="postAddToView" listener="#{trocaMB.lerTroca}" />
+	</f:metadata>
+
+	<ui:define name="titulo">#{msgs.tituloCadTro}</ui:define>
+
+	<ui:define name="conteudo">
+		<h:inputHidden id="codigo" value="#{trocaMB.troca.codigo}" />
+		<h:inputHidden id="situacao" value="#{trocaMB.troca.situacao}" />
+
+		<p:panelGrid columns="2">
+
+			<p:outputLabel for="solicita" value="#{msgs.campoLivroSolicita}:" />
+			<p:selectOneMenu id="solicita" value="#{trocaMB.troca.solicita}"
+				required="true">
+				<f:selectItem itemLabel="Selecione..." />
+				<f:selectItems value="#{trocaMB.livros}" var="liv"
+					itemLabel="#{liv.titulo}" />
+			</p:selectOneMenu>
+
+			<ui:remove>
+				<h:panelGroup>
+					<p:inputText id="solicita" value="#{trocaMB.troca.solicita}"
+						required="true" size="5" maxlength="5">
+						<p:ajax event="change" process="solicita"
+							update="livTitulo mensagens" />
+					</p:inputText>
+					<h:outputText id="livTitulo"
+						value=" #{trocaMB.troca.solicita.titulo}" />
+				</h:panelGroup>
+			</ui:remove>
+
+			<p:outputLabel for="oferece" value="#{msgs.campoLivroOferece}:" />
+			<p:selectOneMenu id="oferece" value="#{trocaMB.troca.oferece}"
+				required="true">
+				<f:selectItem itemLabel="Selecione..." />
+				<f:selectItems value="#{trocaMB.livros}" var="liv"
+					itemLabel="#{liv.titulo}" />
+			</p:selectOneMenu>
+
+			<ui:remove>
+				<h:panelGroup>
+					<p:inputText id="oferece" value="#{trocaMB.troca.oferece}"
+						required="true" size="5" maxlength="5">
+						<p:ajax event="change" process="oferece"
+							update="livTitulo mensagens" />
+					</p:inputText>
+					<h:outputText id="livTitulo"
+						value=" #{trocaMB.troca.oferece.titulo}" />
+				</h:panelGroup>
+			</ui:remove>
+
+			<p:outputLabel for="envia" value="#{msgs.campoUsuarioEnvia}:" />
+			<p:selectOneMenu id="envia" value="#{trocaMB.troca.envia}"
+				required="true">
+				<f:selectItem itemLabel="Selecione..." />
+				<f:selectItems value="#{trocaMB.usuarios}" var="usu"
+					itemLabel="#{usu.login}" />
+			</p:selectOneMenu>
+
+			<ui:remove>
+				<h:panelGroup>
+					<p:inputText id="envia" value="#{trocaMB.troca.envia}"
+						required="true" size="5" maxlength="5">
+						<p:ajax event="change" process="envia" update="usuLogin mensagens" />
+					</p:inputText>
+					<h:outputText id="usuLogin" value=" #{trocaMB.troca.envia.login}" />
+				</h:panelGroup>
+			</ui:remove>
+
+			<p:outputLabel for="recebe" value="#{msgs.campoUsuarioRecebe}:" />
+			<p:selectOneMenu id="recebe" value="#{trocaMB.troca.recebe}"
+				required="true">
+				<f:selectItem itemLabel="Selecione..." />
+				<f:selectItems value="#{trocaMB.usuarios}" var="usu"
+					itemLabel="#{usu.login}" />
+			</p:selectOneMenu>
+
+			<ui:remove>
+				<h:panelGroup>
+					<p:inputText id="recebe" value="#{trocaMB.troca.recebe}"
+						required="true" size="5" maxlength="5">
+						<p:ajax event="change" process="recebe"
+							update="usuLogin mensagens" />
+					</p:inputText>
+					<h:outputText id="usuLogin" value=" #{trocaMB.troca.recebe.login}" />
+				</h:panelGroup>
+			</ui:remove>
+
+			<p:outputLabel value="#{msgs.campoSituacao}:" />
+			<h:outputText value="#{trocaMB.troca.situacao.nome}" />
+
+			<p:outputLabel for="data_hora_troca" value="#{msgs.campoDataHoraTroca}:" />
+			<p:calendar pattern="dd/MM/yyyy HH:mm" id="data_hora_troca" value="#{trocaMB.troca.data_hora_troca}">
+			</p:calendar>
+
+			<p:outputLabel for="local_troca" value="#{msgs.campoLocalTroca}:" />
+			<p:inputText id="local_troca" value="#{trocaMB.troca.local_troca}"
+				required="true" size="40" maxlength="120">
+			</p:inputText>
+
+			<h:outputText value="" />
+			<h:panelGroup>
+				<p:commandButton id="enviar" value="#{msgs.btnSalvar}" ajax="false"
+					action="#{trocaMB.acaoSalvar}">
+					<f:param name="codParam" value="#{trocaMB.troca.codigo}" />
+				</p:commandButton>
+					-
+				<p:commandButton id="cancelar" value="#{msgs.btnCancelar}"
+					ajax="false" immediate="true" action="#{trocaMB.acaoListar}" />
+
+				<p:defaultCommand target="enviar"></p:defaultCommand>
+			</h:panelGroup>
+
+		</p:panelGrid>
+
+	</ui:define>
+
+</ui:composition>
+</html>

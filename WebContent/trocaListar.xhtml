@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="modelo.xhtml">
+
+	<ui:define name="titulo">#{msgs.tituloCadTro}</ui:define>
+
+	<ui:define name="opcoesMenu">
+		<p:commandButton immediate="true" ajax="false" type="push"
+			value="Início" action="home.jsf" icon="ui-icon-home"
+			rendered="#{loginMB.autenticado}" />
+
+		<p:commandButton immediate="true" ajax="false"
+			value="#{msgs.linkNovoTro}" action="#{trocaMB.acaoAbrirInclusao}"
+			icon="ui-icon-pencil" />
+	</ui:define>
+
+	<ui:define name="conteudo">
+
+		<p:panelGrid columns="2">
+
+			<p:outputLabel for="situacao" value="#{msgs.campoSituacao}:" />
+			<p:selectOneMenu id="situacao" value="#{trocaMB.filtroSit}"
+				required="false">
+				<f:selectItem itemLabel="Selecione..." />
+				<f:selectItems value="#{trocaMB.situacoes}" var="sit"
+					itemLabel="#{sit.nome}" />
+				<p:ajax event="change" process="situacao descricao" update="tabela" />
+			</p:selectOneMenu>
+
+			<p:outputLabel for="descricao" value="#{msgs.campoDescricao}:" />
+			<p:inputText id="descricao" value="#{trocaMB.filtroDescricao}"
+				required="false" size="40">
+				<p:ajax event="keyup" process="situacao descricao" update="tabela" />
+			</p:inputText>
+
+			<ui:remove>
+				<h:outputText value="" />
+				<p:commandButton id="enviar" value="#{msgs.btnEnviar}" ajax="true"
+					process="situacao descricao" update="tabela" />
+			</ui:remove>
+		</p:panelGrid>
+
+		<p:dataTable id="tabela" value="#{trocaMB.lista}" var="tro"
+			rowHover="true" rendered="#{trocaMB.lista != null}"
+			emptyMessage="Nenhum resultado foi encontrado!">
+
+			<f:facet name="header">#{msgs.tituloListaTro}:</f:facet>
+			<f:facet name="footer">#{msgs.tituloTotTro}: #{trocaMB.listaSize}</f:facet>
+
+			<p:column>
+				<f:facet name="header">#{msgs.tituloOpcoes}</f:facet>
+				<p:commandButton ajax="false" title="#{msgs.linkResponder}"
+					icon="ui-icon-pencil" action="#{trocaMB.acaoResponder(tro.codigo)}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoCodigo}</f:facet>
+				<h:outputText value="#{tro.codigo}"></h:outputText>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoLivroSolicita}</f:facet>
+				<h:outputText value="#{tro.solicita.titulo}"></h:outputText>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoLivroOferece}</f:facet>
+				<h:outputText value="#{tro.oferece.titulo}"></h:outputText>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoUsuarioEnvia}</f:facet>
+				<h:outputText value="#{tro.envia.login}"></h:outputText>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoUsuarioRecebe}</f:facet>
+				<h:outputText value="#{tro.recebe.login}"></h:outputText>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoSituacao}</f:facet>
+				<h:outputText value="#{tro.situacao.nome}"></h:outputText>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoLocalTroca}</f:facet>
+				<h:outputText value="#{tro.local_troca}"></h:outputText>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoDataHoraTroca}</f:facet>
+				<h:outputText value="#{tro.data_hora_troca}">
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+				</h:outputText>
+			</p:column>
+
+		</p:dataTable>
+	</ui:define>
+
+</ui:composition>
+</html>

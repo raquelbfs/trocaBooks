@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="modelo.xhtml">
+
+	<f:metadata>
+		<f:event type="postAddToView" listener="#{livroMB.lerLivro}" />
+	</f:metadata>
+
+	<ui:define name="titulo">#{msgs.tituloCadLiv}</ui:define>
+
+	<ui:define name="conteudo">
+		<h:inputHidden id="codigo" value="#{livroMB.livro.codigo}" />
+		<p:panelGrid columns="2">
+
+			<p:outputLabel for="categoria" value="#{msgs.campoCategoria}:" />
+			<p:selectOneMenu id="categoria" value="#{livroMB.livro.categoria}"
+				required="true">
+				<f:selectItem itemLabel="Selecione..." />
+				<f:selectItems value="#{livroMB.categorias}" var="cat"
+					itemLabel="#{cat.nome}" />
+			</p:selectOneMenu>
+
+			<ui:remove>
+				<h:panelGroup>
+					<p:inputText id="categoria" value="#{livroMB.livro.categoria}"
+						required="true" size="5" maxlength="5">
+						<p:ajax event="change" process="categoria"
+							update="catNome mensagens" />
+					</p:inputText>
+					<h:outputText id="catNome" value=" #{livroMB.livro.categoria.nome}" />
+				</h:panelGroup>
+			</ui:remove>
+
+			<p:outputLabel for="estado" value="#{msgs.campoEstado}:" />
+			<p:selectOneMenu id="estado" value="#{livroMB.livro.estado}"
+				required="true">
+				<f:selectItem itemLabel="Selecione..." />
+				<f:selectItems value="#{livroMB.estados}" var="sta"
+					itemLabel="#{sta.nome}" />
+			</p:selectOneMenu>
+
+			<ui:remove>
+				<h:panelGroup>
+					<p:inputText id="estado" value="#{livroMB.livro.estado}"
+						required="true" size="5" maxlength="5">
+						<p:ajax event="change" process="estado" update="staNome mensagens" />
+					</p:inputText>
+					<h:outputText id="catNome" value=" #{livroMB.livro.estado.nome}" />
+				</h:panelGroup>
+			</ui:remove>
+			
+			<p:outputLabel for="editora" value="#{msgs.campoEditora}:" />
+			<p:selectOneMenu id="editora" value="#{livroMB.livro.editora}"
+				required="true">
+				<f:selectItem itemLabel="Selecione..." />
+				<f:selectItems value="#{livroMB.editoras}" var="edi"
+					itemLabel="#{edi.nome}" />
+			</p:selectOneMenu>
+
+			<ui:remove>
+				<h:panelGroup>
+					<p:inputText id="editora" value="#{livroMB.livro.editora}"
+						required="true" size="5" maxlength="5">
+						<p:ajax event="change" process="editora" update="ediNome mensagens" />
+					</p:inputText>
+					<h:outputText id="ediNome" value=" #{livroMB.livro.editora.nome}" />
+				</h:panelGroup>
+			</ui:remove>
+			
+			<p:outputLabel for="usuario" value="#{msgs.campoUsuario}:" />
+			<p:selectOneMenu id="usuario" value="#{livroMB.livro.usuario}"
+				required="true">
+				<f:selectItem itemLabel="Selecione..." />
+				<f:selectItems value="#{livroMB.usuarios}" var="usu"
+					itemLabel="#{usu.login}" />
+			</p:selectOneMenu>
+
+			<ui:remove>
+				<h:panelGroup>
+					<p:inputText id="usuario" value="#{livroMB.livro.usuario}"
+						required="true" size="5" maxlength="5">
+						<p:ajax event="change" process="usuario"
+							update="usuLogin mensagens" />
+					</p:inputText>
+					<h:outputText id="usuLogin" value=" #{livroMB.livro.usuario.login}" />
+				</h:panelGroup>
+			</ui:remove>
+
+			<p:outputLabel for="codigo" value="#{msgs.campoCodigo}:" />
+			<h:outputText value="#{livroMB.livro.codigo}" />
+
+			<p:outputLabel for="titulo" value="#{msgs.campoTitulo}:" />
+			<p:inputText id="titulo" value="#{livroMB.livro.titulo}"
+				required="true" size="40" maxlength="120">
+			</p:inputText>
+
+			<p:outputLabel for="autor" value="#{msgs.campoAutor}:" />
+			<p:inputText id="autor" value="#{livroMB.livro.autor}"
+				required="true" size="40" maxlength="120">
+			</p:inputText>
+
+			<p:outputLabel for="ano" value="#{msgs.campoAno}:" />
+			<p:inputText id="ano" value="#{livroMB.livro.ano}" size="10"
+				maxlength="8">
+			</p:inputText>
+
+			<p:outputLabel for="data_cadastro" value="#{msgs.campoDataCadastro}:" />
+			<p:calendar pattern="dd/MM/yyyy" id="data_cadastro" value="#{livroMB.livro.data_cadastro}"></p:calendar>
+
+			<p:outputLabel for="foto" value="#{msgs.campoFoto}:" />
+			<p:fileUpload id="foto" value="#{livroMB.uploadedFile}" mode="simple"
+				fileLimit="1" multiple="false" allowTypes="/(\.|\/)(jpeg|jpg)$/"
+				invalidFileMessage="São permitidas somente imagens (jpeg, jpg)" />
+				
+			<h:outputText value="" />
+			<h:panelGroup>
+				<p:commandButton id="enviar" value="#{msgs.btnSalvar}" ajax="false"
+					action="#{livroMB.acaoSalvar}">
+					<f:param name="codParam" value="#{livroMB.livro.codigo}" />
+				</p:commandButton>
+					-
+				<p:commandButton id="cancelar" value="#{msgs.btnCancelar}"
+					ajax="false" immediate="true" action="#{livroMB.acaoListar}" />
+
+				<p:defaultCommand target="enviar"></p:defaultCommand>
+			</h:panelGroup>
+
+		</p:panelGrid>
+
+	</ui:define>
+
+</ui:composition>
+</html>

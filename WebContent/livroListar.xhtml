@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="modelo.xhtml">
+
+	<ui:define name="titulo">#{msgs.tituloCadLiv}</ui:define>
+
+	<ui:define name="opcoesMenu">
+		<p:commandButton immediate="true" ajax="false" type="push"
+			value="Início" action="home.jsf" icon="ui-icon-home"
+			rendered="#{loginMB.autenticado}" />
+
+		<p:commandButton immediate="true" ajax="false"
+			value="#{msgs.linkNovoLiv}" action="#{livroMB.acaoAbrirInclusao}"
+			icon="ui-icon-pencil" />
+	</ui:define>
+
+	<ui:define name="conteudo">
+
+		<p:panelGrid columns="2">
+
+			<p:outputLabel for="categoria" value="#{msgs.campoCategoria}:" />
+			<p:selectOneMenu id="categoria" value="#{livroMB.filtroCat}"
+				required="false">
+				<f:selectItem itemLabel="Selecione..." />
+				<f:selectItems value="#{livroMB.categorias}" var="cat"
+					itemLabel="#{cat.nome}" />
+				<p:ajax event="change" process="categoria descricao" update="tabela" />
+			</p:selectOneMenu>
+
+			<p:outputLabel for="estado" value="#{msgs.campoEstado}:" />
+			<p:selectOneMenu id="estado" value="#{livroMB.filtroStat}"
+				required="false">
+				<f:selectItem itemLabel="Selecione..." />
+				<f:selectItems value="#{livroMB.estados}" var="sta"
+					itemLabel="#{sta.nome}" />
+				<p:ajax event="change" process="estado descricao" update="tabela" />
+			</p:selectOneMenu>
+			
+			<p:outputLabel for="editora" value="#{msgs.campoEditora}:" />
+			<p:selectOneMenu id="editora" value="#{livroMB.filtroEdi}"
+				required="false">
+				<f:selectItem itemLabel="Selecione..." />
+				<f:selectItems value="#{livroMB.editoras}" var="edi"
+					itemLabel="#{edi.nome}" />
+				<p:ajax event="change" process="editora descricao" update="tabela" />
+			</p:selectOneMenu>
+			
+			<p:outputLabel for="usuario" value="#{msgs.campoUsuario}:" />
+			<p:selectOneMenu id="usuario" value="#{livroMB.filtroUsu}"
+				required="false">
+				<f:selectItem itemLabel="Selecione..." />
+				<f:selectItems value="#{livroMB.usuarios}" var="usu"
+					itemLabel="#{usu.login}" />
+				<p:ajax event="change" process="usuario descricao" update="tabela" />
+			</p:selectOneMenu>
+
+			<p:outputLabel for="descricao" value="#{msgs.campoDescricao}:" />
+			<p:inputText id="descricao" value="#{livroMB.filtroDescricao}"
+				required="false" size="40">
+				<p:ajax event="keyup" process="categoria descricao" update="tabela" />
+			</p:inputText>
+			
+			<ui:remove>
+				<h:outputText value="" />
+				<p:commandButton id="enviar" value="#{msgs.btnEnviar}" ajax="true"
+					process="categoria descricao" update="tabela" />
+			</ui:remove>
+		</p:panelGrid>
+
+		<p:dataTable id="tabela" value="#{livroMB.lista}" var="liv"
+			rowHover="true" rendered="#{livroMB.lista != null}"
+			emptyMessage="Nenhum resultado foi encontrado!">
+
+			<f:facet name="header">#{msgs.tituloListaLiv}:</f:facet>
+			<f:facet name="footer">#{msgs.tituloTotLiv}: #{livroMB.listaSize}</f:facet>
+
+			<p:column>
+				<f:facet name="header">#{msgs.tituloOpcoes}</f:facet>
+				<p:commandButton ajax="false" title="#{msgs.linkAlterar}"
+					icon="ui-icon-pencil"
+					action="#{livroMB.acaoAbrirAlteracao(liv.codigo)}" />
+
+				<p:commandButton ajax="false" type="button"
+					title="#{msgs.linkExcluir}"
+					onclick="PF('conf#{liv.codigo}').show()" icon="ui-icon-close" />
+
+				<p:confirmDialog
+					message="Deseja excluir este livro [#{liv.titulo}]?"
+					showEffect="fade" hideEffect="explode"
+					header="Confirmação de Exclusão" severity="alert"
+					widgetVar="conf#{liv.codigo}">
+
+					<p:commandButton ajax="false" type="push" value="Sim"
+						action="#{livroMB.acaoExcluir(liv.codigo)}" immediate="true"
+						icon="ui-icon-check">
+					</p:commandButton>
+
+					<p:commandButton value="Não"
+						onclick="PF('conf#{liv.codigo}').hide()" type="button"
+						icon="ui-icon-close" />
+				</p:confirmDialog>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoFoto}</f:facet>
+				<h:graphicImage url="foto.jsf?codigo=#{liv.codigo}" width="100"
+					height="100" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoCategoria}</f:facet>
+				<h:outputText value="#{liv.categoria.nome}"></h:outputText>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoEstado}</f:facet>
+				<h:outputText value="#{liv.estado.nome}"></h:outputText>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoEditora}</f:facet>
+				<h:outputText value="#{liv.editora.nome}"></h:outputText>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoCodigo}</f:facet>
+				<h:outputText value="#{liv.codigo}"></h:outputText>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoTitulo}</f:facet>
+				<h:outputText value="#{liv.titulo}"></h:outputText>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoAutor}</f:facet>
+				<h:outputText value="#{liv.autor}"></h:outputText>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoAno}</f:facet>
+				<h:outputText value="#{liv.ano}"></h:outputText>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{msgs.campoDataCadastro}</f:facet>
+				<h:outputText value="#{liv.data_cadastro}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+
+		</p:dataTable>
+
+	</ui:define>
+
+</ui:composition>
+</html>

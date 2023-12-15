@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<ui:define name="titulo">#{msgs.tituloAutenticacao}</ui:define>
+	<link href="css/style.css" rel='stylesheet' type='text/css' />
+</h:head>
+
+<h:body>
+	<div class="login-form">
+		<div class="head">
+			<img src="img/TrocaBook_.png" alt="Logo TrocaBooks" />
+		</div>
+	</div>
+	
+	<h:form id="form" prependId="false" enctype="multipart/form-data">
+		<p:panelGrid columns="3">
+			<p:outputLabel for="login" value="#{msgs.tituloUsuario}:" />
+			<p:inputText id="login" value="#{loginMB.login}" >
+				<f:validateLength minimum="3" maximum="30" />
+			</p:inputText>
+			<p:message for="login" />
+
+			<p:outputLabel for="senha" value="#{msgs.tituloSenha}:" />
+			<h:inputSecret id="senha" value="#{loginMB.senha}" redisplay="false" />
+			<p:message for="senha" />
+
+			<h:outputText value="" />
+			<p:commandButton id="enviar" value="#{msgs.btnEnviar}" ajax="false"
+				action="#{loginMB.acaoAutenticar}" />
+
+			<p:defaultCommand target="enviar"></p:defaultCommand>
+
+			<p:commandButton id="cadastrar" value="#{msgs.tituloCadastrarUsu}"
+				ajax="false" action="#{usuarioMB.acaoAbrirInclusao}"
+				immediate="true" />
+
+			<p:commandButton id="logar" value="#{msgs.campoLogarAdmin}"
+				ajax="false" action="#{loginMB.indexAdmin}" immediate="true" />
+
+		</p:panelGrid>
+	</h:form>
+	</h:body>
+</html>
